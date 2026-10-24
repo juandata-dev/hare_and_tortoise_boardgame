@@ -16,6 +16,26 @@ npm run audio      # regenerate public/audio/*.ogg|mp3 (needs python3 + numpy + 
 
 Append `?renderer=canvas` to the URL to force the Canvas renderer on machines without GPU acceleration.
 
+## Desktop (.exe)
+
+The game is packaged for Windows with [Tauri v2](https://v2.tauri.app/). It uses the WebView2 runtime that
+ships with Windows 11, so the result is about 10 MB.
+
+**Download a build:** the GitHub Actions workflow *Desktop build (.exe)* (`.github/workflows/desktop.yml`) runs on
+a Windows runner. Start it from the **Actions** tab (*Run workflow*), or push a `v*` tag to also attach the files
+to a GitHub Release. The `hare-tortoise-windows` artifact contains:
+
+- `Hare & Tortoise_1.0.0_x64-setup.exe`: an installer with a Start-menu shortcut and an uninstaller.
+- `Hare-Tortoise-portable.exe`: runs without installing; just double-click it.
+
+The executables are not code-signed, so on first run Windows SmartScreen asks for confirmation:
+*More info → Run anyway*.
+
+**Build locally on Windows:** install [Rust](https://rustup.rs) and the *Visual Studio C++ Build Tools*, then run
+`npm install` and `npm run desktop:build`. The installer ends up in `src-tauri/target/release/bundle/nsis/` and the
+portable exe at `src-tauri/target/release/hare-tortoise.exe`. Run `npm run tauri dev` to open the game in a desktop
+window with hot reload.
+
 ## Project layout
 
 ```
@@ -32,6 +52,7 @@ src/
   audio/     SoundManager + SFX keys
 public/audio/  12 SFX in .ogg + .mp3
 scripts/generate_audio.py
+src-tauri/     Tauri desktop shell (config, icons, minimal Rust entry point)
 tests/
 ```
 
